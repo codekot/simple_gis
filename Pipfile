@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 folium = "*"
 flask = "*"
+pandas = "*"
+geopandas = "*"
 
 [dev-packages]
 
