@@ -4,6 +4,7 @@ import folium
 import jenkspy
 
 
+
 center_latitude = 57
 center_longitude = 52
 zoom_level = 8
@@ -17,9 +18,6 @@ pop_data = df["NUMPOINTS"].tolist()
 num_classes = 15
 breaks = jenkspy.jenks_breaks(pop_data, n_classes=num_classes)
 print(breaks)
-test_breaks = [ 347.0, 489.0, ]
-bin_ranges = [min(pop_data)] + test_breaks + [max(pop_data)]
-
 
 folium.Choropleth(
     geo_data=geojson_file,
@@ -27,11 +25,13 @@ folium.Choropleth(
     data=df,
     columns=["fid", "NUMPOINTS"],
     key_on="properties.fid",
-    fill_color="YlGn",
+    fill_color='Spectral',
     fill_opacity=0.7,
     line_opacity=0.2,
     legend_name="Population",
-    bin=bin_ranges,
+    bins=breaks,
+    highlight=True,
+    use_jenks=False,
 ).add_to(base_map)
 
 app = Flask(__name__)
