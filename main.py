@@ -16,8 +16,9 @@ df = gpd.read_file(geojson_file)
 
 pop_data = df["NUMPOINTS"].tolist()
 num_classes = 15
+
 breaks = jenkspy.jenks_breaks(pop_data, n_classes=num_classes)
-print(breaks)
+
 
 folium.Choropleth(
     geo_data=geojson_file,
@@ -25,7 +26,7 @@ folium.Choropleth(
     data=df,
     columns=["fid", "NUMPOINTS"],
     key_on="properties.fid",
-    fill_color='Spectral',
+    fill_color='Spectral_r',
     fill_opacity=0.7,
     line_opacity=0.2,
     legend_name="Population",
@@ -33,6 +34,13 @@ folium.Choropleth(
     highlight=True,
     use_jenks=False,
 ).add_to(base_map)
+
+# for i in range(len(df)):
+#     folium.Polygon(
+#         locations=df.iloc[i]["geometry"]["coordinates"][0][0],
+#         # popup=str(df.iloc[i]["properties"]["NUMPOINTS"]),
+#     ).add_to(base_map)
+print(df.iloc[0]["geometry"])
 
 app = Flask(__name__)
 
