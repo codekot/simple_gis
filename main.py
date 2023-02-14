@@ -9,7 +9,7 @@ center_latitude = 57
 center_longitude = 52
 zoom_level = 8
 
-base_map = folium.Map(location=[center_latitude, center_longitude], zoom_start=zoom_level)
+base_map = folium.Map(location=[center_latitude, center_longitude], zoom_start=zoom_level, tiles="cartodbpositron")
 
 geojson_file = "udmurtia_hex_without_towns.geojson"
 df = gpd.read_file(geojson_file)
@@ -35,15 +35,15 @@ folium.Choropleth(
     use_jenks=False,
 ).add_to(base_map)
 
-for i in range(len(df)):
-    polygon_coords = [(y, x) for x, y in df.iloc[i]["geometry"].exterior.coords[:]]
-    folium.Polygon(
-        locations=polygon_coords,
-        popup="Население: "+str(int(df.iloc[i]["NUMPOINTS"])),
-        fill=True,
-        color=None,
-        fill_opacity=0.0,
-).add_to(base_map)
+# for i in range(len(df)):
+#     polygon_coords = [(y, x) for x, y in df.iloc[i]["geometry"].exterior.coords[:]]
+#     folium.Polygon(
+#         locations=polygon_coords,
+#         popup="Население:"+str(int(df.iloc[i]["NUMPOINTS"])),
+#         fill=True,
+#         color=None,
+#         fill_opacity=0.0,
+# ).add_to(base_map)
 
 
 app = Flask(__name__)
