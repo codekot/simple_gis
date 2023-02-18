@@ -55,4 +55,8 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    if os.environ.get('FLASK_ENV') == 'production':
+        debug = False
+    else:
+        debug = True
+    app.run(debug=debug)
