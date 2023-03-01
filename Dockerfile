@@ -6,7 +6,7 @@ COPY . /app
 
 RUN pip install pipenv
 
-RUN pipenv install --no-cache-dir
+RUN pipenv install
 
 ENV FLASK_ENV=production
 ENV FLASK_APP=app.py

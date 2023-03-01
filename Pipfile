@@ -4,13 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-numpy = "*"
-flask = "*"
-folium = "*"
-geopandas = "*"
-jenkspy = "*"
+numpy = "1.24.2"
+flask = "2.2.3"
+folium = "0.14.0"
+geopandas = "0.12.2"
+jenkspy = "0.3.2"
 
 [dev-packages]
 
 [requires]
-python_version = "3.9"
+python_version = "3.9.13"
