@@ -7,7 +7,7 @@ COPY . /app
 RUN pip install --upgrade pip
 RUN pip install pipenv
 
-RUN pipenv install
+RUN pipenv install --verbose
 
 ENV FLASK_ENV=production
 ENV FLASK_APP=app.py
