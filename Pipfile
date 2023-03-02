@@ -8,6 +8,7 @@ flask = "*"
 geopandas = "*"
 folium = "*"
 jenkspy = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

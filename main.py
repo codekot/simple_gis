@@ -3,7 +3,17 @@ import geopandas as gpd
 import folium
 import jenkspy
 import os
+from dotenv import load_dotenv
+import requests
 
+try:
+    load_dotenv()
+except:
+    pass
+
+# geojson_url = os.environ['GEOJSON_URL']
+file_id = os.environ['FILE_ID']
+url = f'https://drive.google.com/uc?id={file_id}&export=download'
 
 
 center_latitude = 57
@@ -12,8 +22,12 @@ zoom_level = 8
 
 base_map = folium.Map(location=[center_latitude, center_longitude], zoom_start=zoom_level, tiles="cartodbpositron")
 
-geojson_file = "udmurtia_hex_without_towns.geojson"
-df = gpd.read_file(geojson_file)
+# geojson_file = "udmurtia_hex_without_towns.geojson"
+response = requests.get(url)
+with open('temp.geojson', 'wb') as f:
+    f.write(response.content)
+
+df = gpd.read_file('temp.geojson', driver='GeoJSON')
 
 pop_data = df["NUMPOINTS"].tolist()
 num_classes = 15
@@ -22,7 +36,7 @@ breaks = jenkspy.jenks_breaks(pop_data, n_classes=num_classes)
 
 
 folium.Choropleth(
-    geo_data=geojson_file,
+    geo_data='temp.geojson',
     name="choropleth",
     data=df,
     columns=["fid", "NUMPOINTS"],
