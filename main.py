@@ -50,6 +50,8 @@ folium.Choropleth(
     use_jenks=False,
 ).add_to(base_map)
 
+base_map.fit_bounds(base_map.get_bounds())
+
 # for i in range(len(df)):
 #     polygon_coords = [(y, x) for x, y in df.iloc[i]["geometry"].exterior.coords[:]]
 #     folium.Polygon(
@@ -74,4 +76,4 @@ if __name__ == "__main__":
         debug = False
     else:
         debug = True
-    app.run(debug=debug)
+    app.run(host='0.0.0.0', port=5000, debug=debug)
