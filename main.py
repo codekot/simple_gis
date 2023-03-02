@@ -12,6 +12,7 @@ except:
     pass
 
 # geojson_url = os.environ['GEOJSON_URL']
+host = os.getenv('HOST', 'localhost')
 file_id = os.environ['FILE_ID']
 url = f'https://drive.google.com/uc?id={file_id}&export=download'
 
@@ -76,4 +77,4 @@ if __name__ == "__main__":
         debug = False
     else:
         debug = True
-    app.run(host='0.0.0.0', port=5000, debug=debug)
+    app.run(host=host, port=5000, debug=debug)

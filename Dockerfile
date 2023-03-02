@@ -14,4 +14,4 @@ ENV FLASK_APP=main.py
 
 EXPOSE 5000
 
-CMD ["/bin/bash", "-c", "source $(pipenv --venv)/bin/activate && flask run --host=0.0.0.0"]
+CMD ["/bin/bash", "-c", "source $(pipenv --venv)/bin/activate && python main.py"]
