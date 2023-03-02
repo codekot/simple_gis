@@ -10,7 +10,7 @@ RUN pip install pipenv
 RUN pipenv install --verbose
 
 ENV FLASK_ENV=production
-ENV FLASK_APP=app.py
+ENV FLASK_APP=main.py
 
 EXPOSE 5000
 
