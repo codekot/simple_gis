@@ -5,6 +5,7 @@ import jenkspy
 import os
 from dotenv import load_dotenv
 import requests
+import geopandas as gpd
 
 try:
     load_dotenv()
@@ -39,12 +40,14 @@ num_classes = 15
 
 breaks = jenkspy.jenks_breaks(pop_data, n_classes=num_classes)
 
+df = gpd.read_file(geojson_file)
+data = df[["fid", "NUMPOINTS"]].squeeze()
 
 folium.Choropleth(
     geo_data=geojson_file,
     name="choropleth",
-    data=geojson_data,
-    columns=None,
+    data=data,
+    columns=['fid', 'NUMPOINTS'],
     key_on="feature.properties.fid",
     fill_color='Spectral_r',
     fill_opacity=0.7,
