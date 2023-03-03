@@ -77,4 +77,5 @@ if __name__ == "__main__":
         debug = False
     else:
         debug = True
-    app.run(host=host, port=5000, debug=debug)
+    # app.run(host=host, port=5000, debug=debug)
+    app.run(debug=debug)
