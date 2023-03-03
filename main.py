@@ -12,10 +12,10 @@ except:
     pass
 
 # geojson_url = os.environ['GEOJSON_URL']
-host = os.getenv('HOST', 'localhost')
+host = os.getenv('HOST', '0.0.0.0')
+
 file_id = os.environ['FILE_ID']
 url = f'https://drive.google.com/uc?id={file_id}&export=download'
-
 
 center_latitude = 57
 center_longitude = 52
