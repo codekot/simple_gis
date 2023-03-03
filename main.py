@@ -1,5 +1,5 @@
+import json
 from flask import Flask, render_template
-import geopandas as gpd
 import folium
 import jenkspy
 import os
@@ -15,7 +15,7 @@ except:
 host = os.getenv('HOST', '0.0.0.0')
 
 file_id = os.environ['FILE_ID']
-url = f'https://drive.google.com/uc?id={file_id}&export=download'
+geojson_url = f'https://drive.google.com/uc?id={file_id}&export=download'
 
 center_latitude = 57
 center_longitude = 52
@@ -24,24 +24,28 @@ zoom_level = 8
 base_map = folium.Map(location=[center_latitude, center_longitude], zoom_start=zoom_level, tiles="cartodbpositron")
 
 # geojson_file = "udmurtia_hex_without_towns.geojson"
-response = requests.get(url)
-with open('temp.geojson', 'wb') as f:
+geojson_file = 'temp.geojson'
+response = requests.get(geojson_url)
+
+with open(geojson_file, 'wb') as f:
     f.write(response.content)
 
-df = gpd.read_file('temp.geojson', driver='GeoJSON')
+with open(geojson_file) as f:
+    geojson_data = json.load(f)
 
-pop_data = df["NUMPOINTS"].tolist()
+pop_data = [f['properties']['NUMPOINTS'] for f in geojson_data['features']]
+
 num_classes = 15
 
 breaks = jenkspy.jenks_breaks(pop_data, n_classes=num_classes)
 
 
 folium.Choropleth(
-    geo_data='temp.geojson',
+    geo_data=geojson_file,
     name="choropleth",
-    data=df,
-    columns=["fid", "NUMPOINTS"],
-    key_on="properties.fid",
+    data=geojson_data,
+    columns=None,
+    key_on="feature.properties.fid",
     fill_color='Spectral_r',
     fill_opacity=0.7,
     line_opacity=0.2,
