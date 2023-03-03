@@ -9,6 +9,7 @@ geopandas = "*"
 folium = "*"
 jenkspy = "*"
 python-dotenv = "*"
+gunicorn = "*"
 
 [dev-packages]
 
