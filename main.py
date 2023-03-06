@@ -37,7 +37,7 @@ num_classes = 15
 
 breaks = jenkspy.jenks_breaks(pop_data, n_classes=num_classes)
 
-df = gpd.read_file(geojson_file)
+df = gpd.GeoDataFrame.from_features(geojson_data)
 data = df[["fid", "NUMPOINTS"]].squeeze()
 
 folium.Choropleth(
