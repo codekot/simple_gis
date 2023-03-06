@@ -25,7 +25,7 @@ zoom_level = 8
 base_map = folium.Map(location=[center_latitude, center_longitude], zoom_start=zoom_level, tiles="cartodbpositron")
 
 # geojson_file = "udmurtia_hex_without_towns.geojson"
-geojson_file = 'temp.geojson'
+# geojson_file = 'temp.geojson'
 response = requests.get(geojson_url)
 
 geojson_data = json.loads(response.content)
@@ -41,7 +41,7 @@ df = gpd.read_file(geojson_file)
 data = df[["fid", "NUMPOINTS"]].squeeze()
 
 folium.Choropleth(
-    geo_data=geojson_file,
+    geo_data=geojson_data,
     name="choropleth",
     data=data,
     columns=['fid', 'NUMPOINTS'],
