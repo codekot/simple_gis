@@ -28,11 +28,9 @@ base_map = folium.Map(location=[center_latitude, center_longitude], zoom_start=z
 geojson_file = 'temp.geojson'
 response = requests.get(geojson_url)
 
-with open(geojson_file, 'wb') as f:
-    f.write(response.content)
+response = requests.get(url)
+geojson_data = json.loads(response.content)
 
-with open(geojson_file) as f:
-    geojson_data = json.load(f)
 
 pop_data = [f['properties']['NUMPOINTS'] for f in geojson_data['features']]
 
