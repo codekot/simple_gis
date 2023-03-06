@@ -28,7 +28,6 @@ base_map = folium.Map(location=[center_latitude, center_longitude], zoom_start=z
 geojson_file = 'temp.geojson'
 response = requests.get(geojson_url)
 
-response = requests.get(url)
 geojson_data = json.loads(response.content)
 
 
