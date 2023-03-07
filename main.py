@@ -47,7 +47,7 @@ folium.Choropleth(
     columns=['fid', 'NUMPOINTS'],
     key_on="feature.properties.fid",
     fill_color='Spectral_r',
-    fill_opacity=0.7,
+    fill_opacity=0.85,
     line_opacity=0.2,
     legend_name="Population",
     bins=breaks,
