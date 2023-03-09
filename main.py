@@ -75,6 +75,10 @@ app = Flask(__name__)
 def home():
     return render_template("home.html", base_map=base_map._repr_html_())
 
+@app.route("/leaflet")
+def leaflet():
+    return render_template("leaflet_map.html")
+
 
 if __name__ == "__main__":
     if os.environ.get('FLASK_ENV') == 'production':
