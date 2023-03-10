@@ -8,5 +8,6 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 fetch("/data")
     .then(response => response.json())
     .then(data => {
-    console.log(data)
+        L.geoJSON(data).addTo(map);
+        console.log(data);
   })
