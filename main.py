@@ -1,5 +1,5 @@
 import json
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 import folium
 import jenkspy
 import os
@@ -78,6 +78,11 @@ def home():
 @app.route("/leaflet")
 def leaflet():
     return render_template("leaflet_map.html")
+
+
+@app.route("/data")
+def data():
+    return jsonify(geojson_data)
 
 
 if __name__ == "__main__":
