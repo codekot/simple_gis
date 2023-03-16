@@ -12,7 +12,7 @@ var lineStyle = {
     "fill": false
 };
 
-function getColor(value) {
+function getColor_old(value) {
   if (value > 5000) {
     return "#800026";
   } else if (value > 1000) {
@@ -24,20 +24,43 @@ function getColor(value) {
   }
 }
 
+function getColor(value, minVal, maxVal) {
+      var colors = d3.interpolateRdYlBu;
+      var colorScale = d3.scaleLinear()
+        .domain([minVal, maxVal])
+        .range([0, 1]);
+      const color = colors(colorScale(value));
+      console.log(color);
+      return color;
+    }
+
+
 function style(feature) {
     return {
-        fillColor: getColor(feature.properties.NUMPOINTS),
+        fillColor: getColor(feature.properties.NUMPOINTS, minVal, maxVal),
         weight: 1,
         opacity: 1,
         color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7
+        fillOpacity: 0.85
     };
 }
 
 fetch("/data")
     .then(response => response.json())
     .then(data => {
+        let maxVal = -Infinity;
+        let minVal = Infinity;
+
+        // Loop through features and update max and min values
+        data.features.forEach(feature => {
+          const val = feature.properties.NUMPOINTS;
+          if (val > maxVal) {
+            maxVal = val;
+          }
+          if (val < minVal) {
+            minVal = val;
+          }
+        });
         L.geoJSON(data, {
             style: style
         }).addTo(map);
