@@ -27,7 +27,7 @@ function getColor_old(value) {
 function getColor(value, minVal, maxVal) {
       var colors = d3.interpolateRdYlBu;
       var colorScale = d3.scaleLinear()
-        .domain([minVal, maxVal])
+        .domain([maxVal, minVal])
         .range([0, 1]);
       const color = colors(colorScale(value));
       console.log(color);
@@ -35,7 +35,7 @@ function getColor(value, minVal, maxVal) {
     }
 
 
-function style(feature) {
+function style(feature, minVal, maxVal) {
     return {
         fillColor: getColor(feature.properties.NUMPOINTS, minVal, maxVal),
         weight: 1,
@@ -62,7 +62,7 @@ fetch("/data")
           }
         });
         L.geoJSON(data, {
-            style: style
+            style: feature => style(feature, minVal, maxVal)
         }).addTo(map);
         console.log(data);
   })
