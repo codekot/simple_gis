@@ -35,14 +35,19 @@ function getColor(value, minVal, maxVal) {
     }
 
 
-function style(feature, minVal, maxVal) {
-    return {
-        fillColor: getColor(feature.properties.NUMPOINTS, minVal, maxVal),
-        weight: 1,
-        opacity: 1,
-        color: 'white',
-        fillOpacity: 0.85
-    };
+function style(feature, data, minVal, maxVal, numClasses, useJenks) {
+    if(useJenks){
+        console.log("Using Jenks natural breaks")
+    }
+    else {
+        return {
+            fillColor: getColor(feature.properties.NUMPOINTS, minVal, maxVal),
+            weight: 1,
+            opacity: 1,
+            color: 'white',
+            fillOpacity: 0.85
+        };
+    }
 }
 
 fetch("/data")
@@ -61,8 +66,13 @@ fetch("/data")
             minVal = val;
           }
         });
-        L.geoJSON(data, {
+        /*L.geoJSON(data, {
             style: feature => style(feature, minVal, maxVal)
+        }).addTo(map);*/
+        var numClasses = 0;
+        var useJenks = false;
+        L.geoJSON(data, {
+            style: feature => style(feature, data, minVal, maxVal, numClasses, useJenks)
         }).addTo(map);
         console.log(data);
   })
