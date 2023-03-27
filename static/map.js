@@ -34,10 +34,27 @@ function getColor(value, minVal, maxVal) {
       return color;
     }
 
+function getColorJenks(value, data, numClasses) {
+    var series = data.map(function(feature) {
+      return feature.properties.NUMPOINTS;
+    });
+    var breaks = jenks(series, numClasses);
+    var index = bisect(breaks, value);
+    var color = colors[index];
+    console.log(color);
+    return color;
+}
 
 function style(feature, data, minVal, maxVal, numClasses, useJenks) {
     if(useJenks){
         console.log("Using Jenks natural breaks")
+        return {
+            fillColor: getColorJenks(feature.properties.NUMPOINTS, data, numClasses),
+            weight: 1,
+            opacity: 1,
+            color: 'white',
+            fillOpacity: 0.85
+          };
     }
     else {
         return {
@@ -70,9 +87,10 @@ fetch("/data")
             style: feature => style(feature, minVal, maxVal)
         }).addTo(map);*/
         var numClasses = 0;
-        var useJenks = false;
+        var useJenks = true;
+        console.log(data);
         L.geoJSON(data, {
-            style: feature => style(feature, data, minVal, maxVal, numClasses, useJenks)
+            style: feature => style(feature, data.features, minVal, maxVal, numClasses, useJenks)
         }).addTo(map);
         console.log(data);
   })
