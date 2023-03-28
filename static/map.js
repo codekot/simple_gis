@@ -5,6 +5,22 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
+function getMinMaxValues(data) {
+  let maxVal = -Infinity;
+  let minVal = Infinity;
+
+  data.features.forEach(feature => {
+    const val = feature.properties.NUMPOINTS;
+    if (val > maxVal) {
+      maxVal = val;
+    }
+    if (val < minVal) {
+      minVal = val;
+    }
+  });
+
+  return [minVal, maxVal];
+}
 
 function getColor(value, minVal, maxVal) {
       var colors = d3.interpolateRdYlBu;
@@ -56,22 +72,8 @@ fetch("/data")
     .then(input => {
         data = input.geojson;
         breaks = input.breaks;
-        let maxVal = -Infinity;
-        let minVal = Infinity;
+        const [minVal, maxVal] = getMinMaxValues(data);
 
-        // Loop through features and update max and min values
-        data.features.forEach(feature => {
-          const val = feature.properties.NUMPOINTS;
-          if (val > maxVal) {
-            maxVal = val;
-          }
-          if (val < minVal) {
-            minVal = val;
-          }
-        });
-        /*L.geoJSON(data, {
-            style: feature => style(feature, minVal, maxVal)
-        }).addTo(map);*/
         var numClasses = 0;
         var useJenks = true;
         console.log(data);
