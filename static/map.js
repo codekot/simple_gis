@@ -37,7 +37,8 @@ function getColorJenks(value, data, breaks) {
         return feature.properties.NUMPOINTS;
     });
     var index = d3.bisect(breaks, value);
-    var colorScale = d3.interpolateRdYlBu;
+    //var colorScale = d3.interpolateRdYlBu;
+    var colorScale = d3.interpolateSpectral;
     //var colorScale = d3.interpolateBuYlRd;
     //var colors = d3.schemeCategory10;
     var color = colorScale(1-(index/ (breaks.length - 1)));
