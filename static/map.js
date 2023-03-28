@@ -34,22 +34,24 @@ function getColor(value, minVal, maxVal) {
       return color;
     }
 
-function getColorJenks(value, data, numClasses) {
+function getColorJenks(value, data, breaks) {
     var series = data.map(function(feature) {
-      return feature.properties.NUMPOINTS;
+        return feature.properties.NUMPOINTS;
     });
-    var breaks = jenks(series, numClasses);
-    var index = bisect(breaks, value);
-    var color = colors[index];
-    console.log(color);
+    var index = d3.bisect(breaks, value);
+    var colorScale = d3.interpolateRdYlBu;
+    //var colorScale = d3.interpolateBuYlRd;
+    //var colors = d3.schemeCategory10;
+    var color = colorScale(1-(index/ (breaks.length - 1)));
+    //console.log(color);
     return color;
 }
 
-function style(feature, data, minVal, maxVal, numClasses, useJenks) {
+function style(feature, data, minVal, maxVal, useJenks, breaks) {
     if(useJenks){
         console.log("Using Jenks natural breaks")
         return {
-            fillColor: getColorJenks(feature.properties.NUMPOINTS, data, numClasses),
+            fillColor: getColorJenks(feature.properties.NUMPOINTS, data, breaks),
             weight: 1,
             opacity: 1,
             color: 'white',
@@ -69,7 +71,9 @@ function style(feature, data, minVal, maxVal, numClasses, useJenks) {
 
 fetch("/data")
     .then(response => response.json())
-    .then(data => {
+    .then(input => {
+        data = input.geojson;
+        breaks = input.breaks;
         let maxVal = -Infinity;
         let minVal = Infinity;
 
@@ -90,7 +94,7 @@ fetch("/data")
         var useJenks = true;
         console.log(data);
         L.geoJSON(data, {
-            style: feature => style(feature, data.features, minVal, maxVal, numClasses, useJenks)
+            style: feature => style(feature, data.features, minVal, maxVal, useJenks, breaks)
         }).addTo(map);
         console.log(data);
   })

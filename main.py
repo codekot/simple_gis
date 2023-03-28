@@ -82,7 +82,9 @@ def leaflet():
 
 @app.route("/data")
 def data():
-    return jsonify(geojson_data)
+    return jsonify({
+        "geojson": geojson_data,
+        "breaks": breaks})
 
 
 if __name__ == "__main__":
