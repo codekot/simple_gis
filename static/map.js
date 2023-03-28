@@ -5,24 +5,6 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-var lineStyle = {
-    "color": "#ff7800",
-    "weight": 1,
-    "opacity": 0.1,
-    "fill": false
-};
-
-function getColor_old(value) {
-  if (value > 5000) {
-    return "#800026";
-  } else if (value > 1000) {
-    return "#BD0026";
-  } else if (value > 500) {
-    return "#E31A1C";
-  } else {
-    return "gray";
-  }
-}
 
 function getColor(value, minVal, maxVal) {
       var colors = d3.interpolateRdYlBu;
