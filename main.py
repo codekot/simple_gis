@@ -12,7 +12,7 @@ try:
 except:
     pass
 
-# geojson_url = os.environ['GEOJSON_URL']
+
 host = os.getenv('HOST', '0.0.0.0')
 
 file_id = os.environ['FILE_ID']
@@ -24,8 +24,6 @@ zoom_level = 8
 
 base_map = folium.Map(location=[center_latitude, center_longitude], zoom_start=zoom_level, tiles="openstreetmap")
 
-# geojson_file = "udmurtia_hex_without_towns.geojson"
-# geojson_file = 'temp.geojson'
 response = requests.get(geojson_url)
 
 geojson_data = json.loads(response.content)
