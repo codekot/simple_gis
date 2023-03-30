@@ -78,8 +78,8 @@ fetch("/data")
         var numClasses = 0;
         var useJenks = true;
         console.log(data);
-        L.geoJSON(data, {
+        var geoJsonLayer = L.geoJSON(data, {
             style: feature => style(feature, data.features, minVal, maxVal, useJenks, breaks)
         }).addTo(map);
-        console.log(data);
+        map.fitBounds(geoJsonLayer.getBounds());
   })

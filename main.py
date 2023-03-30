@@ -12,7 +12,6 @@ try:
 except:
     pass
 
-
 host = os.getenv('HOST', '0.0.0.0')
 
 file_id = os.environ['FILE_ID']
@@ -27,7 +26,6 @@ base_map = folium.Map(location=[center_latitude, center_longitude], zoom_start=z
 response = requests.get(geojson_url)
 
 geojson_data = json.loads(response.content)
-
 
 pop_data = [f['properties']['NUMPOINTS'] for f in geojson_data['features']]
 
@@ -72,6 +70,7 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     return render_template("home.html", base_map=base_map._repr_html_())
+
 
 @app.route("/leaflet")
 def leaflet():
