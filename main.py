@@ -53,16 +53,6 @@ folium.Choropleth(
 
 base_map.fit_bounds(base_map.get_bounds())
 
-# for i in range(len(df)):
-#     polygon_coords = [(y, x) for x, y in df.iloc[i]["geometry"].exterior.coords[:]]
-#     folium.Polygon(
-#         locations=polygon_coords,
-#         popup="Население:"+str(int(df.iloc[i]["NUMPOINTS"])),
-#         fill=True,
-#         color=None,
-#         fill_opacity=0.0,
-# ).add_to(base_map)
-
 
 app = Flask(__name__)
 

@@ -47,24 +47,20 @@ function getColorJenks(value, data, breaks) {
 }
 
 function style(feature, data, minVal, maxVal, useJenks, breaks) {
+    let fillColor;
+
     if(useJenks){
-        console.log("Using Jenks natural breaks")
-        return {
-            fillColor: getColorJenks(feature.properties.NUMPOINTS, data, breaks),
-            weight: 1,
-            opacity: 1,
-            color: 'white',
-            fillOpacity: 0.85
-          };
+        fillColor = getColorJenks(feature.properties.NUMPOINTS, data, breaks);
     }
     else {
-        return {
-            fillColor: getColor(feature.properties.NUMPOINTS, minVal, maxVal),
-            weight: 1,
-            opacity: 1,
-            color: 'white',
-            fillOpacity: 0.85
-        };
+        fillColor: getColor(feature.properties.NUMPOINTS, minVal, maxVal)
+    }
+    return {
+        fillColor,
+        weight: 0.1,
+        opacity: 1,
+        color: 'grey',
+        fillOpacity: 0.85
     }
 }
 
