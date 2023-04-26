@@ -77,5 +77,61 @@ fetch("/data")
         var geoJsonLayer = L.geoJSON(data, {
             style: feature => style(feature, data.features, minVal, maxVal, useJenks, breaks)
         }).addTo(map);
+        addLegend(map, minVal, maxVal)
         map.fitBounds(geoJsonLayer.getBounds());
   })
+
+
+//var legend = L.control({position: 'topright'});
+//
+//legend.onAdd = function (map) {
+//    var div = L.DomUtil.create('div', 'info legend'),
+//        grades = [0, 100, 200, 300, 400],
+//        labels = [],
+//        from, to;
+//
+//    for (var i = 0; i < grades.length; i++) {
+//        from = grades[i];
+//        to = grades[i + 1] - 1;
+//
+//        labels.push(
+//            '<i style="background:' + getColor(from + 1, minVal, maxVal) + '"></i> ' +
+//            from + (to ? '&ndash;' + to : '+'));
+//    }
+//
+//    div.innerHTML = labels.join('<br>');
+//    return div;
+//};
+//
+//legend.addTo(map);
+
+function addLegend(map, minVal, maxVal){
+    var legend = L.control({position: 'topright'});
+
+    legend.onAdd = function (map) {
+        console.log("Adding legend...")
+//        var minVal = 100;
+//        var maxVal = 10000;
+        var div = L.DomUtil.create('div', 'info legend');
+        div.innerHTML +=
+            '<i style="background:' + getColor(0, minVal, maxVal) + '"></i> ' +
+            '0<br>';
+        div.innerHTML +=
+            '<i style="background:' + getColor(100, minVal, maxVal) + '"></i> ' +
+            '100<br>';
+        div.innerHTML +=
+            '<i style="background:' + getColor(200, minVal, maxVal) + '"></i> ' +
+            '200<br>';
+        div.innerHTML +=
+            '<i style="background:' + getColor(300, minVal, maxVal) + '"></i> ' +
+            '300<br>';
+        div.innerHTML +=
+            '<i style="background:' + getColor(400, minVal, maxVal) + '"></i> ' +
+            '400+<br>';
+
+        return div;
+    };
+
+    legend.addTo(map);
+}
+
