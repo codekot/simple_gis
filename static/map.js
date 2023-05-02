@@ -114,19 +114,19 @@ function addLegend(map, minVal, maxVal){
 //        var maxVal = 10000;
         var div = L.DomUtil.create('div', 'info legend');
         div.innerHTML +=
-            '<i style="background:' + getColor(0, minVal, maxVal) + '"></i> ' +
+            '<i class="color-box" style="background-color:' + getColor(0, minVal, maxVal) + '"></i> ' +
             '0<br>';
         div.innerHTML +=
-            '<i style="background:' + getColor(100, minVal, maxVal) + '"></i> ' +
+            '<i class="color-box" style="background-color:' + getColor(100, minVal, maxVal) + '"></i> ' +
             '100<br>';
         div.innerHTML +=
-            '<i style="background:' + getColor(200, minVal, maxVal) + '"></i> ' +
+            '<i class="color-box" style="background-color:' + getColor(200, minVal, maxVal) + '"></i> ' +
             '200<br>';
         div.innerHTML +=
-            '<i style="background:' + getColor(300, minVal, maxVal) + '"></i> ' +
+            '<i class="color-box" style="background-color:' + getColor(300, minVal, maxVal) + '"></i> ' +
             '300<br>';
         div.innerHTML +=
-            '<i style="background:' + getColor(400, minVal, maxVal) + '"></i> ' +
+            '<i class="color-box" style="background-color:' + getColor(400, minVal, maxVal) + '"></i> ' +
             '400+<br>';
 
         return div;
