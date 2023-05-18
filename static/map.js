@@ -5,56 +5,32 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-function getMinMaxValues(data) {
-  let maxVal = -Infinity;
-  let minVal = Infinity;
-
-  data.features.forEach(feature => {
-    const val = feature.properties.NUMPOINTS;
-    if (val > maxVal) {
-      maxVal = val;
-    }
-    if (val < minVal) {
-      minVal = val;
-    }
-  });
-
-  return [minVal, maxVal];
-}
-
-function getColor(value, minVal, maxVal) {
-      var colors = d3.interpolateRdYlBu;
-      var colorScale = d3.scaleLinear()
-        .domain([maxVal, minVal])
-        .range([0, 1]);
-      const color = colors(colorScale(value));
-      console.log(color);
-      return color;
-    }
-
-function getColorJenks(value, data, breaks) {
-    var series = data.map(function(feature) {
-        return feature.properties.NUMPOINTS;
-    });
-    var index = d3.bisect(breaks, value);
-    //var colorScale = d3.interpolateRdYlBu;
+function getNormColor(value){
     var colorScale = d3.interpolateSpectral;
-    //var colorScale = d3.interpolateBuYlRd;
-    //var colors = d3.schemeCategory10;
-    var color = colorScale(1-(index/ (breaks.length - 1)));
-    //console.log(color);
-    return color;
+    return colorScale(1-value) //using inverse palette
 }
 
-function style(feature, data, minVal, maxVal, useJenks, breaks) {
-    let fillColor;
-
+function normalizeValue(value, breaks, useJenks){
     if(useJenks){
-        fillColor = getColorJenks(feature.properties.NUMPOINTS, data, breaks);
+        var index = d3.bisect(breaks, value);
+        return index/(breaks.length - 1)
+    } else {
+        console.log("nV", value, typeof(breaks))
+        return value/breaks[breaks.length - 1]
     }
-    else {
-        fillColor: getColor(feature.properties.NUMPOINTS, minVal, maxVal)
-    }
+}
+
+function getColor(value, breaks, useJenks) {
+    var normalizedValue = normalizeValue(value, breaks, useJenks);
+    return getNormColor(normalizedValue);
+}
+
+function style(feature, data, useJenks, breaks) {
+    let fillColor;
+    console.log("style", typeof(breaks))
+
+    fillColor = getColor(feature.properties.NUMPOINTS, breaks, useJenks);
+
     return {
         fillColor,
         weight: 0.1,
@@ -69,65 +45,29 @@ fetch("/data")
     .then(input => {
         data = input.geojson;
         breaks = input.breaks;
-        const [minVal, maxVal] = getMinMaxValues(data);
 
         var numClasses = 0;
         var useJenks = true;
         console.log(data);
         var geoJsonLayer = L.geoJSON(data, {
-            style: feature => style(feature, data.features, minVal, maxVal, useJenks, breaks)
+            style: feature => style(feature, data.features, useJenks, breaks)
         }).addTo(map);
-        addLegend(map, minVal, maxVal)
+        addLegend(map, breaks, useJenks);
         map.fitBounds(geoJsonLayer.getBounds());
   })
 
 
-//var legend = L.control({position: 'topright'});
-//
-//legend.onAdd = function (map) {
-//    var div = L.DomUtil.create('div', 'info legend'),
-//        grades = [0, 100, 200, 300, 400],
-//        labels = [],
-//        from, to;
-//
-//    for (var i = 0; i < grades.length; i++) {
-//        from = grades[i];
-//        to = grades[i + 1] - 1;
-//
-//        labels.push(
-//            '<i style="background:' + getColor(from + 1, minVal, maxVal) + '"></i> ' +
-//            from + (to ? '&ndash;' + to : '+'));
-//    }
-//
-//    div.innerHTML = labels.join('<br>');
-//    return div;
-//};
-//
-//legend.addTo(map);
-
-function addLegend(map, minVal, maxVal){
+function addLegend(map, breaks, useJenks){
     var legend = L.control({position: 'topright'});
 
     legend.onAdd = function (map) {
         console.log("Adding legend...")
-//        var minVal = 100;
-//        var maxVal = 10000;
         var div = L.DomUtil.create('div', 'info legend');
+        breaks.forEach(function(value){
         div.innerHTML +=
-            '<i class="color-box" style="background-color:' + getColor(0, minVal, maxVal) + '"></i> ' +
-            '0<br>';
-        div.innerHTML +=
-            '<i class="color-box" style="background-color:' + getColor(100, minVal, maxVal) + '"></i> ' +
-            '100<br>';
-        div.innerHTML +=
-            '<i class="color-box" style="background-color:' + getColor(200, minVal, maxVal) + '"></i> ' +
-            '200<br>';
-        div.innerHTML +=
-            '<i class="color-box" style="background-color:' + getColor(300, minVal, maxVal) + '"></i> ' +
-            '300<br>';
-        div.innerHTML +=
-            '<i class="color-box" style="background-color:' + getColor(400, minVal, maxVal) + '"></i> ' +
-            '400+<br>';
+            '<i class="color-box" style="background-color:' + getColor(value, breaks, useJenks) + '"></i> ' + value +
+            '<br>';
+        });
 
         return div;
     };
